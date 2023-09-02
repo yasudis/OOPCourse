@@ -63,6 +63,5 @@ public class Main {
                         subtractingIntervals[1].showIntervals());
             }
         }
-
     }
 }
