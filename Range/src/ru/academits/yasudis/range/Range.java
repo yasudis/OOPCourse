@@ -92,6 +92,7 @@ public class Range {
             result[0] = null;
 
         }
+
         if (rangeB.to > this.to) {
             result[1] = null;
         } else {
@@ -100,7 +101,6 @@ public class Range {
 
         return result;
     }
-
 
     public String showIntervals() {
         return (" от " + getFrom() + " до " + getTo());
