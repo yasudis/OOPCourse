@@ -26,6 +26,7 @@ public abstract class Main implements Comparator<Shape>, Comparable<Shape> {
         System.out.println(shapes[shapes.length - 1] + " с периметром - " + shapes[shapes.length - 1].getPerimeter() +
                 ", с высотой - " + shapes[shapes.length - 1].getHeight() + ", с шириной - " + shapes[shapes.length - 1].getWidth());
 
+        System.out.println("Отсортированный массив фигур:");
         System.out.println(Arrays.toString(shapes));
     }
 }
