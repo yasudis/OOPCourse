@@ -1,5 +1,6 @@
 package ru.academits.yasudis.shapes;
 
+
 public interface Shape {
     double getWidth();
 
@@ -8,5 +9,4 @@ public interface Shape {
     double getArea();
 
     double getPerimeter();
-
 }

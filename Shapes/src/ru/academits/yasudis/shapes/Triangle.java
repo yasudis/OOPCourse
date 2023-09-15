@@ -1,10 +1,10 @@
 package ru.academits.yasudis.shapes;
 
-public class Triangle implements Shape {
-    private double height;
-    private double width;
-    private double area;
-    private double perimeter;
+public class Triangle implements Shape, Comparable<Shape> {
+    private final double height;
+    private final double width;
+    private final double area;
+    private final double perimeter;
 
     public Triangle(double x1, double x2, double x3, double y1, double y2, double y3) {
 
@@ -50,7 +50,6 @@ public class Triangle implements Shape {
         return side1Length + side2Length + side3Length;
     }
 
-
     @Override
     public double getWidth() {
         return width;
@@ -69,5 +68,43 @@ public class Triangle implements Shape {
     @Override
     public double getPerimeter() {
         return perimeter;
+    }
+
+    @Override
+    public int compareTo(Shape shape) {
+        double result = area - shape.getArea();
+
+        double epsilon = 1e-10;
+        if (result > epsilon) {
+            return 1;
+        }
+
+        if (result < -epsilon) {
+            return -1;
+        }
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        return "треугольник площадью " + area;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) height;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == this) {
+            return true;
+        }
+
+        if (!(object instanceof Shape shape)) {
+            return false;
+        }
+
+        return shape.getArea() == this.getArea();
     }
 }
