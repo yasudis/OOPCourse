@@ -1,4 +1,4 @@
-package list;
+package ru.academits.yasudis.list;
 
 public class ListItem<T> {
     private T data;

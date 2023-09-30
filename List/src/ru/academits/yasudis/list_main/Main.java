@@ -1,6 +1,6 @@
-package list_main;
+package ru.academits.yasudis.list_main;
 
-import list.SinglyLinkedList;
+import ru.academits.yasudis.list.SinglyLinkedList;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package list;
+package ru.academits.yasudis.list;
 
 import java.util.Objects;
 
