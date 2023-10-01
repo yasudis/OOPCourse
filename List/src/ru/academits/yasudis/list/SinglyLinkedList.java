@@ -2,25 +2,25 @@ package ru.academits.yasudis.list;
 
 import java.util.Objects;
 
-public class SinglyLinkedList<T> {
-    private ListItem<T> head;
+public class SinglyLinkedList<E> {
+    private ListItem<E> head;
     private int count;
 
     public int getCount() {
         return count;
     }
 
-    public T getFirstData() {
+    public E getFirstData() {
         return head.getData();
     }
 
-    public void insertFirstItem(T data) {
+    public void insertFirstItem(E data) {
         head = new ListItem<>(data, head);
         count++;
     }
 
-    public ListItem<T> getItemByIndex(int index) {
-        ListItem<T> result = head;
+    private ListItem<E> getItemByIndex(int index) {
+        ListItem<E> result = head;
         int i = 0;
 
         while (i < index) {
@@ -31,18 +31,18 @@ public class SinglyLinkedList<T> {
         return result;
     }
 
-    public T setValueByIndex(T data, int index) {
+    public E setValueByIndex(E data, int index) {
         if (index < 0 || index >= count) {
             throw new ArrayIndexOutOfBoundsException("индекс неверный");
         }
 
-        ListItem<T> foundItemByIndex = getItemByIndex(index);
-        T oldValue = foundItemByIndex.getData();
+        ListItem<E> foundItemByIndex = getItemByIndex(index);
+        E oldValue = foundItemByIndex.getData();
         foundItemByIndex.setData(data);
         return oldValue;
     }
 
-    public T removeItemByIndex(int index) {
+    public E removeItemByIndex(int index) {
         if (index < 0 || index >= count) {
             throw new ArrayIndexOutOfBoundsException("индекс неверный");
         }
@@ -51,8 +51,8 @@ public class SinglyLinkedList<T> {
             return removeFistItem();
         }
 
-        ListItem<T> prevItem = getItemByIndex(index - 1);
-        ListItem<T> nextData = prevItem.getNext();
+        ListItem<E> prevItem = getItemByIndex(index - 1);
+        ListItem<E> nextData = prevItem.getNext();
 
         prevItem.setNext(nextData.getNext());
         count--;
@@ -61,11 +61,11 @@ public class SinglyLinkedList<T> {
 
     public void reverseList() {
         if (count > 1) {
-            ListItem<T> prev = null;
-            ListItem<T> current = head;
+            ListItem<E> prev = null;
+            ListItem<E> current = head;
 
             while (current != null) {
-                ListItem<T> temp = current.getNext();
+                ListItem<E> temp = current.getNext();
                 current.setNext(prev);
                 prev = current;
                 head = current;
@@ -74,8 +74,8 @@ public class SinglyLinkedList<T> {
         }
     }
 
-    public SinglyLinkedList<T> copy() {
-        SinglyLinkedList<T> result = new SinglyLinkedList<>();
+    public SinglyLinkedList<E> copy() {
+        SinglyLinkedList<E> result = new SinglyLinkedList<>();
         result.count = count;
 
         if (count == 0) {
@@ -83,9 +83,9 @@ public class SinglyLinkedList<T> {
         }
 
         result.head = new ListItem<>(head.getData());
-        ListItem<T> data = result.head;
+        ListItem<E> data = result.head;
 
-        for (ListItem<T> nextData = head.getNext(); nextData != null; nextData = nextData.getNext()) {
+        for (ListItem<E> nextData = head.getNext(); nextData != null; nextData = nextData.getNext()) {
             data.setNext(new ListItem<>(nextData.getData()));
             data = data.getNext();
         }
@@ -93,9 +93,9 @@ public class SinglyLinkedList<T> {
         return result;
     }
 
-    public boolean removeItemByValue(T data) {
-        ListItem<T> prev = null;
-        ListItem<T> nextData = head;
+    public boolean removeItemByValue(E data) {
+        ListItem<E> prev = null;
+        ListItem<E> nextData = head;
         int i = 0;
 
         while (i < count) {
@@ -118,19 +118,19 @@ public class SinglyLinkedList<T> {
         return false;
     }
 
-    public T removeFistItem() {
+    public E removeFistItem() {
         if (count == 0) {
             throw new ArrayIndexOutOfBoundsException("коллекция пуста");
         }
 
         if (count == 1) {
-            T savedOldData = head.getData();
+            E savedOldData = head.getData();
             head = null;
             count--;
             return savedOldData;
         }
 
-        T oldData = head.getData();
+        E oldData = head.getData();
         head = head.getNext();
         count--;
         return oldData;
@@ -144,7 +144,7 @@ public class SinglyLinkedList<T> {
 
         StringBuilder sb = new StringBuilder("[");
 
-        for (ListItem<T> data = head; data != null; data = data.getNext()) {
+        for (ListItem<E> data = head; data != null; data = data.getNext()) {
             sb.append(data.getData());
             if (data.getNext() != null) {
                 sb.append(", ");
