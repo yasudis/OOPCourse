@@ -8,7 +8,7 @@ public class Range {
         this.from = from;
         this.to = to;
 
-        sortRange();
+        sort();
     }
 
     public double getFrom() {
@@ -31,11 +31,11 @@ public class Range {
         return to - from;
     }
 
-    public boolean isRange(double number) {
+    public boolean isInside(double number) {
         return number >= from && number <= to;
     }
 
-    private void sortRange() {
+    private void sort() {
         if (to < from) {
             double temp = to;
             to = from;
@@ -43,66 +43,68 @@ public class Range {
         }
     }
 
-    private boolean isIntersection(Range rangeB) {
-        return this.from <= rangeB.to && this.to >= rangeB.from;
+    private boolean hasIntersection(Range range) {
+        return this.from <= range.to && this.to >= range.from;
     }
 
-    public Double[] getIntersectionTwoIntervals(Range rangeB) {
-        if (!(isIntersection(rangeB))) {
+    public Range getIntersection(Range range) {
+        if (!(hasIntersection(range))) {
             return null;
         }
 
-        Double[] result = new Double[2];
-
-        result[0] = Math.max(this.from, rangeB.from);
-        result[1] = Math.min(this.to, rangeB.to);
-
-        return result;
+        return new Range(Math.max(this.from, range.from), Math.min(this.to, range.to));
     }
 
-    public Range[] combiningIntervals(Range rangeB) {
-        Range[] result = new Range[2];
+    public Range[] getUnion(Range range) {
+        if (!hasIntersection(range)) {
+            Range[] result = new Range[2];
 
-        if (!isIntersection(rangeB)) {
-            result[0] = new Range(this.from, this.to);
-            result[1] = rangeB;
+            result[0] = new Range(from, to);
+            result[1] = new Range(range.from, range.to);
 
             return result;
         }
 
-        double from = Math.min(this.from, rangeB.from);
-        double to = Math.max(this.to, rangeB.to);
+        double from = Math.min(this.from, range.from);
+        double to = Math.max(this.to, range.to);
+
+        Range[] result = new Range[1];
 
         result[0] = new Range(from, to);
         return result;
     }
 
-    public Range[] subtractingIntervals(Range rangeB) {
-        Range[] result = new Range[2];
-
-        if (!isIntersection(rangeB)) {
+    public Range[] getDifference(Range range) {
+        if (!hasIntersection(range)) {
+            Range[] result = new Range[1];
             result[0] = new Range(from, to);
             return result;
         }
 
-        if (rangeB.from > this.from) {
-            result[0] = new Range(this.from, rangeB.from);
+        if (range.from > this.from && range.to <= this.to) {
+            Range[] result = new Range[2];
 
-        } else {
-            result[0] = null;
+            result[0] = new Range(this.from, range.from);
+            result[1] = new Range(range.to, this.to);
 
+            return result;
+        } else if (range.from > this.from) {
+            Range[] result = new Range[1];
+
+            result[0] = new Range(this.from, range.from);
+
+            return result;
+        } else if (range.to <= this.to) {
+            Range[] result = new Range[1];
+            result[0] = new Range(range.to, this.to);
+            return result;
         }
 
-        if (rangeB.to > this.to) {
-            result[1] = null;
-        } else {
-            result[1] = new Range(rangeB.to, this.to);
-        }
-
-        return result;
+        return null;
     }
 
-    public String showIntervals() {
-        return (" от " + getFrom() + " до " + getTo());
+    @Override
+    public String toString() {
+        return "(" + getFrom() + ", " + getTo() + ")";
     }
 }
