@@ -78,6 +78,7 @@ public class Range {
         if (!hasIntersection(range)) {
             Range[] result = new Range[1];
             result[0] = new Range(from, to);
+
             return result;
         }
 
