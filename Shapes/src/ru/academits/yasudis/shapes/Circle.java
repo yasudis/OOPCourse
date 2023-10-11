@@ -1,6 +1,6 @@
 package ru.academits.yasudis.shapes;
 
-public class Circle implements Shape, Comparable<Shape> {
+public class Circle implements Shape {
     private final double radius;
     private final double diameter;
     private final double area;
@@ -9,15 +9,15 @@ public class Circle implements Shape, Comparable<Shape> {
     public Circle(double radius) {
         this.radius = radius;
         diameter = 2 * radius;
-        area = setArea(radius);
-        perimeter = setPerimeter(radius);
+        area = calculateArea(radius);
+        perimeter = calculatePerimeter(radius);
     }
 
-    private double setArea(double radius) {
+    private static double calculateArea(double radius) {
         return Math.PI * Math.pow(radius, 2);
     }
 
-    private double setPerimeter(double radius) {
+    private static double calculatePerimeter(double radius) {
         return 2 * Math.PI * radius;
     }
 
@@ -28,7 +28,7 @@ public class Circle implements Shape, Comparable<Shape> {
 
     @Override
     public double getHeight() {
-        return radius;
+        return diameter;
     }
 
     @Override
@@ -42,23 +42,8 @@ public class Circle implements Shape, Comparable<Shape> {
     }
 
     @Override
-    public int compareTo(Shape shape) {
-        double result = area - shape.getArea();
-
-        double epsilon = 1e-10;
-        if (result > epsilon) {
-            return 1;
-        }
-
-        if (result < -epsilon) {
-            return -1;
-        }
-        return 0;
-    }
-
-    @Override
     public String toString() {
-        return "круг площадью " + area;
+        return "круг радиусом " + radius;
     }
 
     @Override
@@ -68,14 +53,16 @@ public class Circle implements Shape, Comparable<Shape> {
 
     @Override
     public boolean equals(Object object) {
-        if (object == this) {
+        if (this == object) {
             return true;
         }
 
-        if (!(object instanceof Shape shape)) {
+        if (object == null || object.getClass() != this.getClass()) {
             return false;
         }
 
-        return shape.getArea() == this.getArea();
+        Circle circle = (Circle) object;
+
+        return radius == circle.radius;
     }
 }

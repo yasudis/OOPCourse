@@ -1,24 +1,23 @@
 package ru.academits.yasudis.shapes;
 
-public class Square implements Shape, Comparable<Shape> {
+public class Square implements Shape {
     private final double height;
     private final double width;
     private final double area;
     private final double perimeter;
 
-
     public Square(double sideLength) {
         this.height = sideLength;
         width = sideLength;
-        area = setArea();
-        perimeter = setPerimeter();
+        area = calculateArea();
+        perimeter = calculatePerimeter();
     }
 
-    private double setArea() {
+    private double calculateArea() {
         return height * width;
     }
 
-    private double setPerimeter() {
+    private double calculatePerimeter() {
         return height + width;
     }
 
@@ -43,28 +42,13 @@ public class Square implements Shape, Comparable<Shape> {
     }
 
     @Override
-    public int compareTo(Shape shape) {
-        double result = area - shape.getArea();
-
-        double epsilon = 1e-10;
-        if (result > epsilon) {
-            return 1;
-        }
-
-        if (result < -epsilon) {
-            return -1;
-        }
-        return 0;
-    }
-
-    @Override
     public String toString() {
-        return "квадрат площадью " + area;
+        return "квадрат со стороной " + height;
     }
 
     @Override
     public int hashCode() {
-        return (int) height;
+        return Double.hashCode(height);
     }
 
     @Override
@@ -73,10 +57,12 @@ public class Square implements Shape, Comparable<Shape> {
             return true;
         }
 
-        if (!(object instanceof Shape shape)) {
+        if (object == null || object.getClass() != this.getClass()) {
             return false;
         }
 
-        return shape.getArea() == this.getArea();
+        Square square = (Square) object;
+
+        return width == square.width;
     }
 }

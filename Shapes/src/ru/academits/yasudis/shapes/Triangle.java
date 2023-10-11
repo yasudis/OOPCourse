@@ -1,51 +1,52 @@
 package ru.academits.yasudis.shapes;
 
-public class Triangle implements Shape, Comparable<Shape> {
+public class Triangle implements Shape {
     private final double height;
     private final double width;
     private final double area;
     private final double perimeter;
 
+    private double x1;
+    private double x2;
+    private double x3;
+    private double y1;
+    private double y2;
+    private double y3;
+
     public Triangle(double x1, double x2, double x3, double y1, double y2, double y3) {
+        this.x1 = x1;
+        this.x2 = x2;
+        this.x3 = x3;
+        this.y1 = y1;
+        this.y2 = y2;
+        this.y3 = y3;
 
-        height = setHeight(x1, x2, x3);
-        width = setWidth(y1, y2, y3);
-        area = setArea(x1, x2, x3, y1, y2, y3);
-        perimeter = setPerimeter(x1, x2, x3, y1, y2, y3);
+        height = calculateHeight();
+        width = calculateWidth();
+        area = calculateArea();
+        perimeter = calculatePerimeter();
     }
 
-    private double setHeight(double x1, double x2, double x3) {
-        double xMax = x1;
-        xMax = Math.max(xMax, x2);
-        xMax = Math.max(xMax, x3);
-
-        double xMin = x1;
-        xMin = Math.min(xMin, x2);
-        xMin = Math.min(xMin, x3);
-
-        return xMax - xMin;
+    private double calculateHeight() {
+        return Math.max(Math.max(x1, x2), x3) - Math.min(Math.min(x1, x2), x3);
     }
 
-    private double setWidth(double y1, double y2, double y3) {
-        double yMax = y1;
-        yMax = Math.max(yMax, y2);
-        yMax = Math.max(yMax, y3);
-
-        double yMin = y1;
-        yMin = Math.min(yMin, y2);
-        yMin = Math.min(yMin, y3);
-
-        return yMax - yMin;
+    private double calculateWidth() {
+        return Math.max(Math.max(y1, y2), y3) - Math.min(Math.min(y1, y2), y3);
     }
 
-    private double setArea(double x1, double x2, double x3, double y1, double y2, double y3) {
+    private double calculateArea() {
         return 0.5 * Math.abs((x2 - x1) * (y3 - y1) - (x3 - x1) * (y2 - y1));
     }
 
-    private double setPerimeter(double x1, double x2, double x3, double y1, double y2, double y3) {
-        double side1Length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-        double side2Length = Math.sqrt(Math.pow(x3 - x2, 2) + Math.pow(y3 - y2, 2));
-        double side3Length = Math.sqrt(Math.pow(x1 - x3, 2) + Math.pow(y1 - y3, 2));
+    private static double getSideLength(double x1, double y1, double x2, double y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+
+    private double calculatePerimeter() {
+        double side1Length = getSideLength(x1, y1, x2, y2);
+        double side2Length = getSideLength(x2, y2, x3, y3);
+        double side3Length = getSideLength(x1, y1, x3, y3);
 
         return side1Length + side2Length + side3Length;
     }
@@ -71,28 +72,23 @@ public class Triangle implements Shape, Comparable<Shape> {
     }
 
     @Override
-    public int compareTo(Shape shape) {
-        double result = area - shape.getArea();
-
-        double epsilon = 1e-10;
-        if (result > epsilon) {
-            return 1;
-        }
-
-        if (result < -epsilon) {
-            return -1;
-        }
-        return 0;
-    }
-
-    @Override
     public String toString() {
-        return "треугольник площадью " + area;
+        return "треугольник c вершинами: (" + x1 + "," + y1 + "), (" + x2 + "," + y2 + "), (" + x3 + "," + y3 + ")";
     }
 
     @Override
     public int hashCode() {
-        return (int) height;
+        final int prime = 29;
+        int hashCode = 1;
+
+        hashCode = prime * hashCode + Double.hashCode(x1);
+        hashCode = prime * hashCode + Double.hashCode(x2);
+        hashCode = prime * hashCode + Double.hashCode(x3);
+        hashCode = prime * hashCode + Double.hashCode(y1);
+        hashCode = prime * hashCode + Double.hashCode(y2);
+        hashCode = prime * hashCode + Double.hashCode(y3);
+
+        return hashCode;
     }
 
     @Override
@@ -100,11 +96,13 @@ public class Triangle implements Shape, Comparable<Shape> {
         if (object == this) {
             return true;
         }
-
-        if (!(object instanceof Shape shape)) {
+        if (object == null || object.getClass() != this.getClass()) {
             return false;
         }
 
-        return shape.getArea() == this.getArea();
+        Triangle triangle = (Triangle) object;
+
+        return triangle.x1 == x1 && triangle.x2 == x2 && triangle.x3 == x3
+                && triangle.y1 == y1 && triangle.y2 == y2 && triangle.y3 == y3;
     }
 }

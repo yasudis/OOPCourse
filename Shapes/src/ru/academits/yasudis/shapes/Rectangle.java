@@ -1,6 +1,6 @@
 package ru.academits.yasudis.shapes;
 
-public class Rectangle implements Shape, Comparable<Shape> {
+public class Rectangle implements Shape {
     private final double height;
     private final double width;
     private final double area;
@@ -9,15 +9,15 @@ public class Rectangle implements Shape, Comparable<Shape> {
     public Rectangle(double height, double width) {
         this.height = height;
         this.width = width;
-        area = setArea();
-        perimeter = setPerimeter();
+        area = calculateArea();
+        perimeter = calculatePerimeter();
     }
 
-    private double setArea() {
+    private double calculateArea() {
         return height * width;
     }
 
-    private double setPerimeter() {
+    private double calculatePerimeter() {
         return height + width;
     }
 
@@ -42,29 +42,19 @@ public class Rectangle implements Shape, Comparable<Shape> {
     }
 
     @Override
-    public int compareTo(Shape shape) {
-        double result = area - shape.getArea();
-
-        double epsilon = 1e-10;
-
-        if (result > epsilon) {
-            return 1;
-        }
-
-        if (result < -epsilon) {
-            return -1;
-        }
-        return 0;
-    }
-
-    @Override
     public String toString() {
-        return "прямоугольник площадью " + area;
+        return "Прямоугольник со сторонами: " + height + " и " + width;
     }
 
     @Override
     public int hashCode() {
-        return (int) height;
+        final int prime = 29;
+        int hashCode = 1;
+
+        hashCode = prime * hashCode + Double.hashCode(width);
+        hashCode = prime * hashCode + Double.hashCode(height);
+
+        return hashCode;
     }
 
     @Override
@@ -73,10 +63,12 @@ public class Rectangle implements Shape, Comparable<Shape> {
             return true;
         }
 
-        if (!(object instanceof Shape shape)) {
+        if (object == null || object.getClass() != this.getClass()) {
             return false;
         }
 
-        return shape.getArea() == this.getArea();
+        Rectangle rectangle = (Rectangle) object;
+
+        return width == rectangle.width && height == rectangle.height;
     }
 }
