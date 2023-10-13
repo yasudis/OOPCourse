@@ -1,5 +1,6 @@
 package ru.academits.yasudis.list;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class SinglyLinkedList<E> {
@@ -10,90 +11,110 @@ public class SinglyLinkedList<E> {
         return count;
     }
 
-    public E getFirstData() {
+    public E getFirst() {
+        checkListSize();
+
         return head.getData();
     }
 
-    public void insertFirstItem(E data) {
+    private void checkListSize() {
+        if (count == 0) {
+            throw new NoSuchElementException("Коллекция пуста");
+        }
+    }
+
+    private void checkIndex(int index) {
+        if (index < 0 || index >= count) {
+            throw new IndexOutOfBoundsException("Индекс должен быть от 0 до " + (count - 1) + ". Индекс= " + index);
+        }
+    }
+
+    public void insertFirstData(E data) {
         head = new ListItem<>(data, head);
         count++;
     }
 
-    private ListItem<E> getItemByIndex(int index) {
-        ListItem<E> result = head;
+    private ListItem<E> getByIndex(int index) {
+        ListItem<E> node = null;
         int i = 0;
 
-        while (i < index) {
-            result = result.getNext();
+        for (ListItem<E> current = head; current != null; current = current.getNext()) {
+            if (index == i) {
+                node = current;
+
+                break;
+            }
+
             i++;
         }
 
-        return result;
+        return node;
     }
 
-    public E setValueByIndex(E data, int index) {
-        if (index < 0 || index >= count) {
-            throw new ArrayIndexOutOfBoundsException("индекс неверный");
-        }
+    public E getDataByIndex(int index) {
+        return getByIndex(index).getData();
+    }
 
-        ListItem<E> foundItemByIndex = getItemByIndex(index);
-        E oldValue = foundItemByIndex.getData();
-        foundItemByIndex.setData(data);
+    public E set(int index, E data) {
+        checkIndex(index);
+
+        ListItem<E> node = getByIndex(index);
+        E oldValue = node.getData();
+        node.setData(data);
         return oldValue;
     }
 
-    public E removeItemByIndex(int index) {
-        if (index < 0 || index >= count) {
-            throw new ArrayIndexOutOfBoundsException("индекс неверный");
-        }
+    public E removeByIndex(int index) {
+        checkIndex(index);
 
         if (index == 0) {
-            return removeFistItem();
+            return removeFirst();
         }
 
-        ListItem<E> prevItem = getItemByIndex(index - 1);
-        ListItem<E> nextData = prevItem.getNext();
+        ListItem<E> previousNode = getByIndex(index - 1);
+        ListItem<E> currentNode = previousNode.getNext();
 
-        prevItem.setNext(nextData.getNext());
+        previousNode.setNext(currentNode.getNext());
         count--;
-        return nextData.getData();
+
+        return currentNode.getData();
     }
 
-    public void reverseList() {
-        if (count > 1) {
-            ListItem<E> prev = null;
-            ListItem<E> current = head;
+    public void reverse() {
+        ListItem<E> previousNode = null;
+        ListItem<E> currentNode = head;
 
-            while (current != null) {
-                ListItem<E> temp = current.getNext();
-                current.setNext(prev);
-                prev = current;
-                head = current;
-                current = temp;
-            }
+        while (currentNode != null) {
+            ListItem<E> nextNode = currentNode.getNext();
+
+            currentNode.setNext(previousNode);
+            previousNode = currentNode;
+            currentNode = nextNode;
         }
+
+        head = previousNode;
     }
 
-    public SinglyLinkedList<E> copy() {
-        SinglyLinkedList<E> result = new SinglyLinkedList<>();
-        result.count = count;
-
+    public SinglyLinkedList<E> getCopy() {
         if (count == 0) {
-            return result;
+            return new SinglyLinkedList<>();
         }
 
-        result.head = new ListItem<>(head.getData());
-        ListItem<E> data = result.head;
+        SinglyLinkedList<E> newSinglyLinkedList = new SinglyLinkedList<>();
 
-        for (ListItem<E> nextData = head.getNext(); nextData != null; nextData = nextData.getNext()) {
-            data.setNext(new ListItem<>(nextData.getData()));
-            data = data.getNext();
+        newSinglyLinkedList.head = new ListItem<>(head.getData());
+
+        for (ListItem<E> oldNode = head.getNext(), newNode = newSinglyLinkedList.head; oldNode != null;
+             oldNode = oldNode.getNext(), newNode = newNode.getNext()) {
+            newNode.setNext(new ListItem<>(oldNode.getData(), oldNode.getNext()));
         }
 
-        return result;
+        newSinglyLinkedList.count = count;
+
+        return newSinglyLinkedList;
     }
 
-    public boolean removeItemByValue(E data) {
+    public boolean removeByData(E data) {
         ListItem<E> prev = null;
         ListItem<E> nextData = head;
         int i = 0;
@@ -118,40 +139,32 @@ public class SinglyLinkedList<E> {
         return false;
     }
 
-    public E removeFistItem() {
-        if (count == 0) {
-            throw new ArrayIndexOutOfBoundsException("коллекция пуста");
-        }
+    public E removeFirst() {
+        checkListSize();
 
-        if (count == 1) {
-            E savedOldData = head.getData();
-            head = null;
-            count--;
-            return savedOldData;
-        }
+        E deletedData = head.getData();
 
-        E oldData = head.getData();
         head = head.getNext();
         count--;
-        return oldData;
+
+        return deletedData;
     }
 
     @Override
     public String toString() {
         if (count == 0) {
-            return "список пуст.";
+            return "[]";
         }
 
         StringBuilder sb = new StringBuilder("[");
 
-        for (ListItem<E> data = head; data != null; data = data.getNext()) {
-            sb.append(data.getData());
-            if (data.getNext() != null) {
-                sb.append(", ");
-            }
+        for (ListItem<E> node = head; node != null; node = node.getNext()) {
+            sb.append(node.getData()).append(", ");
         }
 
-        sb.append("]");
+        sb.delete(sb.length() - 2, sb.length());
+
+        sb.append(']');
         return sb.toString();
     }
 }

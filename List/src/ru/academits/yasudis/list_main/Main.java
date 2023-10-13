@@ -6,40 +6,40 @@ public class Main {
     public static void main(String[] args) {
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
 
-        list.insertFirstItem(10);
-        list.insertFirstItem(1);
-        list.insertFirstItem(23);
-        list.insertFirstItem(111);
-        list.insertFirstItem(56);
-        list.insertFirstItem(28);
+        list.insertFirstData(10);
+        list.insertFirstData(1);
+        list.insertFirstData(23);
+        list.insertFirstData(111);
+        list.insertFirstData(56);
+        list.insertFirstData(28);
 
         System.out.println(list);
 
         System.out.println("getCount() = " + list.getCount());
 
-        list.setValueByIndex(2, 2);
+        list.set(2, 2);
         System.out.println(list);
 
-        SinglyLinkedList<Integer> listCopy = list.copy();
+        SinglyLinkedList<Integer> listCopy = list.getCopy();
         System.out.println("копированный список равен: " + listCopy);
 
-        list.reverseList();
-        System.out.println("reverseList() = " + list);
+        list.reverse();
+        System.out.println("reverse() = " + list);
 
-        System.out.println("getFirstData() = " + list.getFirstData());
+        System.out.println("getFirst() = " + list.getFirst());
 
-        System.out.println("removeItemByIndex() = " + list.removeItemByIndex(3));
+        System.out.println("removeByIndex() = " + list.removeByIndex(3));
         System.out.println(list);
 
-        System.out.println("removeItemByValue() = " + list.removeItemByValue(1));
+        System.out.println("removeByData() = " + list.removeByData(1));
         System.out.println(list);
 
-        list.setValueByIndex(9, 2);
+        list.set(2, 9);
         System.out.println(list);
 
-        System.out.println("getItemByIndex() = " + list.getItemByIndex(2));
+        System.out.println("getDataByIndex() = " + list.getDataByIndex(2));
 
-        System.out.println("setValueByIndex() = " + list.setValueByIndex(3, 1));
+        System.out.println("set() = " + list.set(3, 1));
         System.out.println(list);
     }
 }
