@@ -115,23 +115,24 @@ public class SinglyLinkedList<E> {
     }
 
     public boolean removeByData(E data) {
-        ListItem<E> prev = null;
-        ListItem<E> nextData = head;
-        int i = 0;
+        if (count == 0) {
+            return false;
+        }
 
-        while (i < count) {
-            if (!Objects.equals(nextData.getData(), data)) {
-                prev = nextData;
-                nextData = nextData.getNext();
-                i++;
-            } else {
-                if (i == 0) {
-                    head = nextData.getNext();
-                } else {
-                    prev.setNext(nextData.getNext());
-                }
+        if (Objects.equals(head.getData(), data)) {
+            removeFirst();
+
+            return true;
+        }
+
+        for (ListItem<E> currentNode = head.getNext(), previousNode = head; currentNode != null;
+             previousNode = currentNode, currentNode = currentNode.getNext()) {
+            if (Objects.equals(data, currentNode.getData())) {
+                assert previousNode != null;
+                previousNode.setNext(currentNode.getNext());
 
                 count--;
+
                 return true;
             }
         }
@@ -165,6 +166,7 @@ public class SinglyLinkedList<E> {
         sb.delete(sb.length() - 2, sb.length());
 
         sb.append(']');
+
         return sb.toString();
     }
 }
