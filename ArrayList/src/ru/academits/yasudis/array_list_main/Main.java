@@ -1,4 +1,6 @@
-import arrayList.MyArrayList;
+package ru.academits.yasudis.array_list_main;
+
+import ru.academits.yasudis.array_list.MyArrayList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
