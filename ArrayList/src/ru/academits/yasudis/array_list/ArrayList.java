@@ -37,7 +37,7 @@ public class ArrayList<E> implements List<E> {
         return indexOf(object) >= 0;
     }
 
-    private class MyListIterator implements Iterator<E> {
+    private class ListIterator implements Iterator<E> {
         private int currentIndex = -1;
         private final int initialModCount = modCount;
 
@@ -61,7 +61,7 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return new MyListIterator();
+        return new ListIterator();
     }
 
     @Override
@@ -303,12 +303,12 @@ public class ArrayList<E> implements List<E> {
 
     // ниже этого коментария методы не нужно делать
     @Override
-    public ListIterator<E> listIterator() {
+    public java.util.ListIterator<E> listIterator() {
         return null;
     }
 
     @Override
-    public ListIterator<E> listIterator(int index) {
+    public java.util.ListIterator<E> listIterator(int index) {
         return null;
     }
 
