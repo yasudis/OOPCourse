@@ -1,14 +1,13 @@
 package ru.academits.yasudis.array_list_main;
 
-import ru.academits.yasudis.array_list.MyArrayList;
+import ru.academits.yasudis.array_list.ArrayList;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        List<Integer> list1 = new MyArrayList<>();
+        List<Integer> list1 = new ArrayList<>();
 
         list1.add(0, 3);
         list1.add(1, 2);
@@ -19,7 +18,7 @@ public class Main {
         System.out.println(list1);
         System.out.println("list1.size = " + list1.size());
 
-        List<Integer> list2 = new ArrayList<>(Arrays.asList(9, 2, 2, 4));
+        List<Integer> list2 = new java.util.ArrayList<>(Arrays.asList(9, 2, 2, 4));
 
         System.out.println("list1.lastIndexOf = " + list1.lastIndexOf(8));
 
@@ -59,7 +58,7 @@ public class Main {
         list1.clear();
         System.out.println(list1);
 
-        MyArrayList<Integer> list3 = new MyArrayList<>(8);
+        ArrayList<Integer> list3 = new ArrayList<>(8);
         System.out.println(list3);
         list3.add(3);
         list3.add(8);
