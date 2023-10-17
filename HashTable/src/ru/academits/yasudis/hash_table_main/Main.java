@@ -1,13 +1,13 @@
-package ru.academits.yasudis.hashTable_main;
+package ru.academits.yasudis.hash_table_main;
 
-import ru.academits.yasudis.hashTable.MyHashTable;
+import ru.academits.yasudis.hash_table.HashTable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        MyHashTable<Integer> hashTable1 = new MyHashTable<>(15);
+        HashTable<Integer> hashTable1 = new HashTable<>(15);
 
         ArrayList<Integer> list1 = new ArrayList<>(Arrays.asList(7, 0, 1, 33, 15, 4, 5, 18, 7, 11, 53, 91));
 
@@ -50,7 +50,7 @@ public class Main {
         hashTable1.clear();
         System.out.println(hashTable1);
 
-        MyHashTable<Integer> hashTable2 = new MyHashTable<>();
+        HashTable<Integer> hashTable2 = new HashTable<>();
 
         System.out.println();
         hashTable2.addAll(list2);
