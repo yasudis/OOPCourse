@@ -1,48 +1,52 @@
 package ru.academits.yasudis.csv;
 
 import java.io.*;
+import java.util.Scanner;
 
 public class CSV {
-    public void convertCSVtoHTML(String readPath, String writePath) {
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(readPath));
-             PrintWriter printWriter = new PrintWriter(writePath)) {
-            printWriter.print("<!DOCTYPE html>");
-            printWriter.print("<html>");
-            printWriter.print("<head><meta charset=\"utf-8\"><title>Таблица</title></head>");
-            printWriter.print("<body>");
+    public void convertCsvToHtml(String pathToCsv, String pathToHtml) throws FileNotFoundException {
+        try (Scanner scanner = new Scanner((new FileReader(pathToCsv)));
+             PrintWriter printWriter = new PrintWriter(pathToHtml)) {
+            printWriter.println("<!DOCTYPE html>");
+            printWriter.println("<html>");
+            printWriter.println("<head>\n\t<meta charset=\"utf-8\">");
+            printWriter.println("\t<title>Таблица</title></head>");
+            printWriter.println("<body>");
             printWriter.print("<table border=\"2\" width=\"500\" align=\"center\">");
 
-            char cellSeparator = ',';
-            char quote = '"';
-            char less = '<';
-            char more = '>';
-            char amp = '&';
+            final char cellSeparator = ',';
+            final char quote = '"';
+            final char less = '<';
+            final char more = '>';
+            final char amp = '&';
 
-            int quotesCount = 0;
+            boolean inQuotes = false;
 
             String line;
 
-            while ((line = bufferedReader.readLine()) != null) {
-                int lineLength = line.length();
+            while (scanner.hasNextLine()) {
+                line = scanner.nextLine();
 
-                if (lineLength == 0) {
+                if (line.isEmpty()) {
                     continue;
                 }
 
-                if (quotesCount % 2 == 0) {
-                    printWriter.print("<tr><td>");
+                if (!inQuotes) {
+                    printWriter.print("\n\t<tr>\n\t\t<td>");
                 }
+
+                int lineLength = line.length();
 
                 for (int i = 0; i < lineLength; i++) {
                     char currentCharacter = line.charAt(i);
 
                     if (currentCharacter == quote) {
-                        ++quotesCount;
-
-                        if (quotesCount % 3 == 0) {
-                            printWriter.print(quote);
+                        if (inQuotes && i + 1 < lineLength && line.charAt(i + 1) == quote) {
+                            printWriter.print("\"");
+                            i++;
+                        } else {
+                            inQuotes = !inQuotes;
                         }
-
                         continue;
                     }
 
@@ -61,31 +65,23 @@ public class CSV {
                         continue;
                     }
 
-                    if (currentCharacter == cellSeparator && quotesCount % 2 == 0) {
-                        printWriter.print("</td><td>");
-
-                        quotesCount = 0;
-
+                    if (currentCharacter == cellSeparator && !inQuotes) {
+                        printWriter.print("</td>\n\t\t<td>");
                         continue;
                     }
 
                     printWriter.print(currentCharacter);
                 }
 
-                if (quotesCount % 2 == 0) {
-                    printWriter.print("</td></tr>");
-
-                    quotesCount = 0;
-
+                if (!inQuotes) {
+                    printWriter.print("</td>\n\t</tr>");
                     continue;
                 }
 
                 printWriter.print("<br/>");
             }
 
-            printWriter.print("</table></body></html>");
-        } catch (IOException e) {
-            System.out.println("Файл не найден");
+            printWriter.print("\n</table>\n</body>\n</html>");
         }
     }
 }
