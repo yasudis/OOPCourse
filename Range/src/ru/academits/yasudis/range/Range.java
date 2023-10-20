@@ -17,6 +17,7 @@ public class Range {
 
     public void setFrom(double from) {
         this.from = from;
+        sort();
     }
 
     public double getTo() {
@@ -25,6 +26,7 @@ public class Range {
 
     public void setTo(double to) {
         this.to = to;
+        sort();
     }
 
     public double getLength() {
@@ -44,68 +46,50 @@ public class Range {
     }
 
     private boolean hasIntersection(Range range) {
-        return this.from <= range.to && this.to >= range.from;
+        return !(from < range.to) || !(to > range.from);
     }
 
     public Range getIntersection(Range range) {
-        if (!(hasIntersection(range))) {
+        if (hasIntersection(range)) {
             return null;
         }
 
-        return new Range(Math.max(this.from, range.from), Math.min(this.to, range.to));
+        return new Range(Math.max(from, range.from), Math.min(to, range.to));
     }
 
     public Range[] getUnion(Range range) {
-        if (!hasIntersection(range)) {
-            Range[] result = new Range[2];
-
-            result[0] = new Range(from, to);
-            result[1] = new Range(range.from, range.to);
-
-            return result;
+        if (from >= range.to || to <= range.from) {
+            return new Range[]{new Range(from, to), new Range(range.from, range.to)};
         }
 
         double from = Math.min(this.from, range.from);
         double to = Math.max(this.to, range.to);
 
-        Range[] result = new Range[1];
-
-        result[0] = new Range(from, to);
-        return result;
+        return new Range[]{new Range(from, to)};
     }
 
     public Range[] getDifference(Range range) {
-        if (!hasIntersection(range)) {
-            Range[] result = new Range[1];
-            result[0] = new Range(from, to);
-
-            return result;
+        if (hasIntersection(range)) {
+            return new Range[]{new Range(from, to)};
         }
 
-        if (range.from > this.from && range.to <= this.to) {
-            Range[] result = new Range[2];
-
-            result[0] = new Range(this.from, range.from);
-            result[1] = new Range(range.to, this.to);
-
-            return result;
-        } else if (range.from > this.from) {
-            Range[] result = new Range[1];
-
-            result[0] = new Range(this.from, range.from);
-
-            return result;
-        } else if (range.to <= this.to) {
-            Range[] result = new Range[1];
-            result[0] = new Range(range.to, this.to);
-            return result;
+        if (range.from > from && range.to < to) {
+            return new Range[]{new Range(from, range.from), new Range(range.to, to)};
         }
 
-        return null;
+        if (range.from > from) {
+            return new Range[]{new Range(from, range.from)};
+        }
+
+        if (range.to < to) {
+            return new Range[]{new Range(range.to, to)};
+        }
+
+        return new Range[0];
     }
 
     @Override
     public String toString() {
-        return "(" + getFrom() + ", " + getTo() + ")";
+        return "(" + from + ", " + to + ")";
     }
 }

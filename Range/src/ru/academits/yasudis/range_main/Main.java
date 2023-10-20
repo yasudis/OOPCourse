@@ -10,7 +10,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         Range range1 = new Range(10, 25.5);
-        Range range2 = new Range(50, 20);
+        Range range2 = new Range(80, 100);
 
         System.out.println("Диапазон начинается: от " + range1.getFrom() + " до " + range1.getTo());
         System.out.println("Длина диапазона равна: " + range1.getLength());
