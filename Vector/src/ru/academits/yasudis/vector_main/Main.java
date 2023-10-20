@@ -51,7 +51,7 @@ public class Main {
         Vector vector8 = Vector.getDifference(vector6, vector7);
         System.out.println("Получение vector8 вычитанием: " + vector8);
 
-        double scalarMultiply = Vector.getScalarMultiplication(vector6, vector7);
+        double scalarMultiply = Vector.getMultiplicationScalar(vector6, vector7);
         System.out.println("Скалярное произведение vector6 и vector7 равно: " + scalarMultiply);
     }
 }

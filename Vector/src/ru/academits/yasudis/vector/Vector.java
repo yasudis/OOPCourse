@@ -7,7 +7,7 @@ public class Vector {
 
     public Vector(int size) {
         if (size <= 0) {
-            throw new IllegalArgumentException("Не верная размерность, должно быть больше 0.");
+            throw new IllegalArgumentException("Неверная размерность, должно быть больше 0. Ведённая размерность " + size);
         }
 
         coordinates = new double[size];
@@ -27,7 +27,7 @@ public class Vector {
 
     public Vector(int size, double[] array) {
         if (size <= 0) {
-            throw new IllegalArgumentException("Не верно задано количество, должно быть больше 0.");
+            throw new IllegalArgumentException("Неверно задано количество, должно быть больше 0. Ведённое количество " + size);
         }
 
         coordinates = Arrays.copyOf(array, size);
@@ -47,7 +47,7 @@ public class Vector {
         return resultVector;
     }
 
-    public static double getScalarMultiplication(Vector vector1, Vector vector2) {
+    public static double getMultiplicationScalar(Vector vector1, Vector vector2) {
         double product = 0;
 
         int minVectorSize = Math.min(vector1.coordinates.length, vector2.coordinates.length);
@@ -60,22 +60,22 @@ public class Vector {
     }
 
     public int getSize() {
-        return this.coordinates.length;
+        return coordinates.length;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("{");
+        sb.append('{');
 
-        int positionLastVector = coordinates.length - 1;
+        int maxIndex = coordinates.length - 1;
 
-        for (int i = 0; i < positionLastVector; i++) {
+        for (int i = 0; i < maxIndex; i++) {
             sb.append(coordinates[i]).append(", ");
         }
 
-        sb.append(coordinates[positionLastVector]);
-        sb.append("}");
+        sb.append(coordinates[maxIndex]);
+        sb.append('}');
 
         return sb.toString();
     }
@@ -86,7 +86,7 @@ public class Vector {
             return true;
         }
 
-        if (object == null || this.getClass() != object.getClass()) {
+        if (object == null || getClass() != object.getClass()) {
             return false;
         }
 
@@ -101,8 +101,8 @@ public class Vector {
     }
 
     public void add(Vector vector) {
-        if (this.coordinates.length < vector.coordinates.length) {
-            this.coordinates = Arrays.copyOf(coordinates, vector.coordinates.length);
+        if (coordinates.length < vector.coordinates.length) {
+            coordinates = Arrays.copyOf(coordinates, vector.coordinates.length);
         }
 
         for (int i = 0; i < vector.coordinates.length; i++) {
@@ -131,28 +131,28 @@ public class Vector {
     }
 
     public double getLength() {
-        double VectorSum = 0;
+        double sum = 0;
 
         for (double coordinate : coordinates) {
-            VectorSum += coordinate * coordinate;
+            sum += coordinate * coordinate;
         }
 
-        return Math.sqrt(VectorSum);
+        return Math.sqrt(sum);
     }
 
     public double getCoordinateByIndex(int index) {
-        if (index < 0 || index >= coordinates.length) {
-            throw new IndexOutOfBoundsException("Неверный индекс " + index + ", не должен выходить за границы от 0 до"
-                    + coordinates.length);
+        if (index <= 0 || index >= coordinates.length) {
+            throw new IndexOutOfBoundsException("Неверный индекс, индекс не должен выходить за границы от 0 до"
+                    + coordinates.length + ". Индекс равен " + index + ".");
         }
 
-        return this.coordinates[index];
+        return coordinates[index];
     }
 
     public void setCoordinateByIndex(int index, double value) {
-        if (index < 0 || index >= coordinates.length) {
-            throw new IndexOutOfBoundsException("Неверный индекс " + index + ", не должен выходить за границы от 0 до"
-                    + coordinates.length);
+        if (index <= 0 || index >= coordinates.length) {
+            throw new IndexOutOfBoundsException("Неверный индекс, индекс не должен выходить за границы от 0 до"
+                    + coordinates.length + ". Индекс равен " + index + ".");
         }
 
         coordinates[index] = value;

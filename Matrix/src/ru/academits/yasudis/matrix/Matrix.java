@@ -188,7 +188,7 @@ public class Matrix {
         Vector result = new Vector(getRowsCount());
 
         for (int i = 0; i < result.getSize(); i++) {
-            result.setCoordinateByIndex(i, Vector.getScalarMultiplication(vector, rows[i]));
+            result.setCoordinateByIndex(i, Vector.getMultiplicationScalar(vector, rows[i]));
         }
 
         return result;
