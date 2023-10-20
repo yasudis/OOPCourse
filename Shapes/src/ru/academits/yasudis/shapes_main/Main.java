@@ -1,7 +1,7 @@
 package ru.academits.yasudis.shapes_main;
 
-import ru.academits.yasudis.comporator.AreaComparator;
-import ru.academits.yasudis.comporator.PerimeterComparator;
+import ru.academits.yasudis.shapes_comparators.ShapeAreaComparator;
+import ru.academits.yasudis.shapes_comparators.ShapePerimeterComparator;
 import ru.academits.yasudis.shapes.*;
 
 import java.util.Arrays;
@@ -22,14 +22,14 @@ public class Main {
         };
 
         System.out.println(Arrays.toString(shapes));
-        Arrays.sort(shapes, new AreaComparator());
+        Arrays.sort(shapes, new ShapeAreaComparator());
 
         System.out.println("Максимальная площадь среди массива фигур это:");
         System.out.println(shapes[shapes.length - 1] + " с площадью - " + shapes[shapes.length - 1].getArea());
 
-        Arrays.sort(shapes, new PerimeterComparator());
+        Arrays.sort(shapes, new ShapePerimeterComparator());
 
-        System.out.println("Максимальный периметр среди массива фигур это:");
+        System.out.println("Второй по величине периметр среди массива фигур это:");
         System.out.println(shapes[shapes.length - 2] + " с периметром - " + shapes[shapes.length - 2].getPerimeter());
     }
 }

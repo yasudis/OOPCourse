@@ -14,7 +14,7 @@ public class Circle implements Shape {
     }
 
     private static double calculateArea(double radius) {
-        return Math.PI * Math.pow(radius, 2);
+        return Math.PI * radius * radius;
     }
 
     private static double calculatePerimeter(double radius) {
@@ -43,12 +43,12 @@ public class Circle implements Shape {
 
     @Override
     public String toString() {
-        return "круг радиусом " + radius;
+        return "Круг радиусом " + radius;
     }
 
     @Override
     public int hashCode() {
-        return (int) radius;
+        return Double.hashCode(radius);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Circle implements Shape {
             return true;
         }
 
-        if (object == null || object.getClass() != this.getClass()) {
+        if (object == null || object.getClass() != getClass()) {
             return false;
         }
 

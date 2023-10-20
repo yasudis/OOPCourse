@@ -1,34 +1,32 @@
 package ru.academits.yasudis.shapes;
 
 public class Square implements Shape {
-    private final double height;
-    private final double width;
+    private final double sideLength;
     private final double area;
     private final double perimeter;
 
     public Square(double sideLength) {
-        this.height = sideLength;
-        width = sideLength;
+        this.sideLength = sideLength;
         area = calculateArea();
         perimeter = calculatePerimeter();
     }
 
     private double calculateArea() {
-        return height * width;
+        return sideLength * sideLength;
     }
 
     private double calculatePerimeter() {
-        return height + width;
+        return 4 * sideLength;
     }
 
     @Override
     public double getWidth() {
-        return width;
+        return sideLength;
     }
 
     @Override
     public double getHeight() {
-        return height;
+        return sideLength;
     }
 
     @Override
@@ -43,12 +41,12 @@ public class Square implements Shape {
 
     @Override
     public String toString() {
-        return "квадрат со стороной " + height;
+        return "Квадрат с шириной " + sideLength + " и высотой " + sideLength;
     }
 
     @Override
     public int hashCode() {
-        return Double.hashCode(height);
+        return Double.hashCode(sideLength);
     }
 
     @Override
@@ -57,12 +55,12 @@ public class Square implements Shape {
             return true;
         }
 
-        if (object == null || object.getClass() != this.getClass()) {
+        if (object == null || object.getClass() != getClass()) {
             return false;
         }
 
         Square square = (Square) object;
 
-        return width == square.width;
+        return sideLength == square.sideLength;
     }
 }
