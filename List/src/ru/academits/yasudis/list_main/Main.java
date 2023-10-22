@@ -6,19 +6,16 @@ public class Main {
     public static void main(String[] args) {
         SinglyLinkedList<Integer> list = new SinglyLinkedList<>();
 
-        list.insertFirstData(10);
-        list.insertFirstData(1);
-        list.insertFirstData(23);
-        list.insertFirstData(111);
-        list.insertFirstData(56);
-        list.insertFirstData(28);
+        list.insertFirst(10);
+        list.insertFirst(1);
+        list.insertFirst(23);
+        list.insertFirst(111);
+        list.insertFirst(56);
+        list.insertFirst(28);
 
-        System.out.println(list);
+        System.out.println("Первоначальный список:\n" + list);
 
         System.out.println("getCount() = " + list.getCount());
-
-        list.set(2, 2);
-        System.out.println(list);
 
         SinglyLinkedList<Integer> listCopy = list.getCopy();
         System.out.println("копированный список равен: " + listCopy);
@@ -28,18 +25,15 @@ public class Main {
 
         System.out.println("getFirst() = " + list.getFirst());
 
-        System.out.println("removeByIndex() = " + list.removeByIndex(3));
+        System.out.println("removeByIndex(3) = " + list.removeByIndex(3));
         System.out.println(list);
 
-        System.out.println("removeByData() = " + list.removeByData(1));
+        System.out.println("removeByData(1) = " + list.removeByData(1));
         System.out.println(list);
 
-        list.set(2, 9);
-        System.out.println(list);
+        System.out.println("get(2) = " + list.get(2));
 
-        System.out.println("getDataByIndex() = " + list.getDataByIndex(2));
-
-        System.out.println("set() = " + list.set(3, 1));
+        System.out.println("set(3, 1) = " + list.set(3, 1));
         System.out.println(list);
     }
 }

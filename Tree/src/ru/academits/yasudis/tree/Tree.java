@@ -6,9 +6,10 @@ import java.util.function.Consumer;
 public class Tree<E> {
     private TreeNode<E> root;
     private int size;
-    private Comparator<E> comparator;
+    private final Comparator<E> comparator;
 
     public Tree() {
+        this.comparator = null;
     }
 
     public Tree(Comparator<E> comparator) {
@@ -28,37 +29,37 @@ public class Tree<E> {
             return;
         }
 
-        TreeNode<E> current = root;
+        TreeNode<E> currentNode = root;
 
         while (true) {
-            int comparisonResult = compare(data, current.getData());
+            int comparisonResult = compare(data, currentNode.getData());
 
             if (comparisonResult < 0) {
-                if (current.getLeft() == null) {
-                    current.setLeft(new TreeNode<>(data));
+                if (currentNode.getLeft() == null) {
+                    currentNode.setLeft(new TreeNode<>(data));
 
                     break;
                 }
 
-                current = current.getLeft();
+                currentNode = currentNode.getLeft();
 
                 continue;
             }
 
-            if (current.getRight() == null) {
-                current.setRight(new TreeNode<>(data));
+            if (currentNode.getRight() == null) {
+                currentNode.setRight(new TreeNode<>(data));
 
                 break;
             }
 
-            current = current.getRight();
+            currentNode = currentNode.getRight();
         }
 
         size++;
     }
 
-    private ArrayList<TreeNode<E>> findNode(E data) {
-        TreeNode<E> previousNode = null;
+    private ArrayList<TreeNode<E>> findNodeAndParent(E data) {
+        TreeNode<E> parentNode = null;
         TreeNode<E> current = root;
 
         while (current != null) {
@@ -67,7 +68,7 @@ public class Tree<E> {
             if (comparisonResult == 0) {
                 ArrayList<TreeNode<E>> nodes = new ArrayList<>();
 
-                nodes.add(previousNode);
+                nodes.add(parentNode);
                 nodes.add(current);
 
                 return nodes;
@@ -78,7 +79,7 @@ public class Tree<E> {
                     return null;
                 }
 
-                previousNode = current;
+                parentNode = current;
                 current = current.getLeft();
 
                 continue;
@@ -88,7 +89,7 @@ public class Tree<E> {
                 return null;
             }
 
-            previousNode = current;
+            parentNode = current;
             current = current.getRight();
         }
 
@@ -96,21 +97,21 @@ public class Tree<E> {
     }
 
     public boolean contains(E data) {
-        return findNode(data) != null;
+        return findNodeAndParent(data) != null;
     }
 
     public boolean remove(E data) {
-        ArrayList<TreeNode<E>> nodes = findNode(data);
+        ArrayList<TreeNode<E>> nodes = findNodeAndParent(data);
 
         if (nodes == null) {
             return false;
         }
 
-        TreeNode<E> previousNode = nodes.get(0);
+        TreeNode<E> parentNode = nodes.get(0);
         TreeNode<E> removingNode = nodes.get(1);
 
         if (removingNode == root) {
-            removeRoot(removingNode, previousNode);
+            removeRoot(removingNode);
 
             size--;
 
@@ -118,15 +119,15 @@ public class Tree<E> {
         }
 
         if (removingNode.getLeft() == null && removingNode.getRight() == null) {
-            if (previousNode.getRight() == removingNode) {
-                previousNode.setRight(null);
+            if (parentNode.getRight() == removingNode) {
+                parentNode.setRight(null);
 
                 size--;
 
                 return true;
             }
 
-            previousNode.setLeft(null);
+            parentNode.setLeft(null);
 
             size--;
 
@@ -134,17 +135,17 @@ public class Tree<E> {
         }
 
         if (removingNode.getLeft() != null && removingNode.getRight() != null) {
-            removeNodeWithTwoChildren(removingNode, previousNode);
+            removeNodeWithTwoChildren(removingNode, parentNode);
 
             size--;
 
             return true;
         }
 
-        if (previousNode.getLeft() == removingNode) {
-            previousNode.setLeft(determineChild(removingNode));
+        if (parentNode.getLeft() == removingNode) {
+            parentNode.setLeft(getChild(removingNode));
         } else {
-            previousNode.setRight(determineChild(removingNode));
+            parentNode.setRight(getChild(removingNode));
         }
 
         size--;
@@ -152,7 +153,7 @@ public class Tree<E> {
         return true;
     }
 
-    private void removeRoot(TreeNode<E> removingNode, TreeNode<E> previousNode) {
+    private void removeRoot(TreeNode<E> removingNode) {
         if (removingNode.getLeft() == null && removingNode.getRight() == null) {
             root = null;
 
@@ -165,49 +166,48 @@ public class Tree<E> {
             return;
         }
 
-        removeNodeWithTwoChildren(removingNode, previousNode);
+        if (removingNode.getLeft() == null) {
+            root = removingNode.getRight();
+
+            return;
+        }
+
+        removeNodeWithTwoChildren(removingNode,null);
     }
 
     private void removeNodeWithTwoChildren(TreeNode<E> removingNode, TreeNode<E> previousNode) {
-        TreeNode<E> parent = null;
-        TreeNode<E> leftmost = removingNode.getRight();
+        TreeNode<E> parentNode = null;
+        TreeNode<E> leftmostNode = removingNode.getRight();
 
-        while (leftmost.getLeft() != null) {
-            parent = leftmost;
-
-            leftmost = leftmost.getLeft();
+        while (leftmostNode.getLeft() != null) {
+            parentNode = leftmostNode;
+            leftmostNode = leftmostNode.getLeft();
         }
 
-        if (parent != null) {
-            if (leftmost.getRight() != null) {
-                parent.setLeft(leftmost.getRight());
-            } else {
-                parent.setLeft(null);
-            }
+        if (parentNode != null) {
+                parentNode.setLeft(leftmostNode.getRight());
         }
 
         if (previousNode != null) {
             if (previousNode.getLeft() == removingNode) {
-                previousNode.setLeft(leftmost);
+                previousNode.setLeft(leftmostNode);
             } else {
-                previousNode.setRight(leftmost);
+                previousNode.setRight(leftmostNode);
             }
         }
 
-        leftmost.setLeft(removingNode.getLeft());
+        leftmostNode.setLeft(removingNode.getLeft());
 
-        if (removingNode.getRight() == leftmost) {
-            leftmost.setRight(leftmost.getRight());
-        } else {
-            leftmost.setRight(removingNode.getRight());
+        if (removingNode.getRight() != leftmostNode) {
+            leftmostNode.setRight(leftmostNode.getRight());
         }
 
         if (removingNode == root) {
-            root = leftmost;
+            root = leftmostNode;
         }
     }
 
-    private TreeNode<E> determineChild(TreeNode<E> removingNode) {
+    private TreeNode<E> getChild(TreeNode<E> removingNode) {
         if (removingNode.getLeft() != null) {
             return removingNode.getLeft();
         }
@@ -239,7 +239,7 @@ public class Tree<E> {
         }
     }
 
-    public void visitInDepthRecursion(Consumer<E> consumer) {
+    public void visitInDepthRecursive(Consumer<E> consumer) {
         if (size == 0) {
             return;
         }
@@ -304,8 +304,7 @@ public class Tree<E> {
             return 1;
         }
 
-        Comparable<E> value = (Comparable<E>) data1;
-
-        return value.compareTo(data2);
+        //noinspection unchecked
+        return ((Comparable<E>) data1).compareTo(data2);
     }
 }

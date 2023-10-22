@@ -1,6 +1,6 @@
 package ru.academits.yasudis.tree;
 
-public class TreeNode<E> {
+class TreeNode<E> {
     private TreeNode<E> left;
     private TreeNode<E> right;
     private E data;
