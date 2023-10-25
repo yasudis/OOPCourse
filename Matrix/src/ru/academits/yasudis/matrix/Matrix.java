@@ -7,11 +7,11 @@ public class Matrix {
 
     public Matrix(int rowsCount, int columnsCount) {
         if (rowsCount <= 0) {
-            throw new IllegalArgumentException("Количество строк должно быть больше 0. Введенное значение: " + rowsCount);
+            throw new IllegalArgumentException("Количество строк должно быть больше 0. Переданное значение: " + rowsCount);
         }
 
         if (columnsCount <= 0) {
-            throw new IllegalArgumentException("Количество столбцов должно быть больше 0. Введенное значение: " + columnsCount);
+            throw new IllegalArgumentException("Количество столбцов должно быть больше 0. Переданное значение: " + columnsCount);
         }
 
         rows = new Vector[rowsCount];
@@ -30,14 +30,14 @@ public class Matrix {
 
         int maxSize = 0;
 
-        for (double[] doubles : array) {
-            if (maxSize < doubles.length) {
-                maxSize = doubles.length;
+        for (double[] line : array) {
+            if (maxSize < line.length) {
+                maxSize = line.length;
             }
         }
 
-        for (int j = 0; j < array.length; j++) {
-            rows[j] = new Vector(maxSize, array[j]);
+        for (int i = 0; i < array.length; i++) {
+            rows[i] = new Vector(maxSize, array[i]);
         }
     }
 
