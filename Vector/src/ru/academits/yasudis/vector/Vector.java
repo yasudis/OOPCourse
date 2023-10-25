@@ -141,18 +141,18 @@ public class Vector {
     }
 
     public double getCoordinateByIndex(int index) {
-        if (index <= 0 || index >= coordinates.length) {
+        if (index < 0 || index >= coordinates.length) {
             throw new IndexOutOfBoundsException("Неверный индекс, индекс не должен выходить за границы от 0 до"
-                    + coordinates.length + ". Индекс равен " + index + ".");
+                    + (coordinates.length - 1) + ". Индекс равен " + index + ".");
         }
 
         return coordinates[index];
     }
 
     public void setCoordinateByIndex(int index, double value) {
-        if (index <= 0 || index >= coordinates.length) {
-            throw new IndexOutOfBoundsException("Неверный индекс, индекс не должен выходить за границы от 0 до"
-                    + coordinates.length + ". Индекс равен " + index + ".");
+        if (index < 0 || index >= coordinates.length) {
+            throw new IndexOutOfBoundsException("Неверный индекс, индекс не должен выходить за границы от 0 до "
+                    + (coordinates.length - 1) + ". Индекс равен " + index + ".");
         }
 
         coordinates[index] = value;

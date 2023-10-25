@@ -43,7 +43,7 @@ public class Main {
         matrix1.setRow(2, vector1);
         System.out.println("Матрица после записи в неё вектора по индексу: " + matrix1);
 
-        Vector vector2 = matrix3.getColumn(2);
+        Vector vector2 = matrix4.getColumn(2);
         System.out.println("Вектор-столбец полученный по индексу: " + vector2);
 
         Vector vector3 = matrix3.getRow(3);
