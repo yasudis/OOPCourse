@@ -22,8 +22,12 @@ public class Matrix {
     }
 
     public Matrix(double[][] array) {
+        if (array == null) {
+            throw new NullPointerException("Двухмерный массив не должен быть null.");
+        }
+
         if (array.length == 0) {
-            throw new IllegalArgumentException("Количество строк в массиве должно быть больше 0, текущего количества строк: " + array.length);
+            throw new IllegalArgumentException("Количество строк матрицы равно 0.");
         }
 
         rows = new Vector[array.length];
