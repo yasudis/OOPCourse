@@ -8,7 +8,6 @@ public class ArrayList<E> implements List<E> {
     private int size;
     private int modCount;
 
-
     public ArrayList() {
         //noinspection unchecked
         items = (E[]) new Object[DEFAULT_CAPACITY];
@@ -16,8 +15,10 @@ public class ArrayList<E> implements List<E> {
 
     public ArrayList(int capacity) {
         if (capacity < 0) {
-            throw new IllegalArgumentException("Вместимость должна быть больше 0. Вместимость: " + capacity);
+            throw new IllegalArgumentException("Невозможно создать ArrayList.Вместимость должна быть больше или равное 0." +
+                    "Введённая вместимость: " + capacity);
         }
+
         //noinspection unchecked
         items = (E[]) new Object[capacity];
     }
@@ -70,10 +71,10 @@ public class ArrayList<E> implements List<E> {
     }
 
     @Override
-    public <E1> E1[] toArray(E1[] array) {
+    public <T> T[] toArray(T[] array) {
         if (array.length < size) {
             //noinspection unchecked
-            return (E1[]) Arrays.copyOf(items, size, array.getClass());
+            return (T[]) Arrays.copyOf(items, size, array.getClass());
         }
 
         //noinspection SuspiciousSystemArraycopy
@@ -124,11 +125,11 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public boolean addAll(int index, Collection<? extends E> collection) {
-        if (index != size) {
-            checkIndex(index);
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона от 0 до " + size);
         }
 
-        if (collection.size() == 0) {
+        if (collection.isEmpty()) {
             return false;
         }
 
@@ -142,7 +143,6 @@ public class ArrayList<E> implements List<E> {
         for (E e : collection) {
             items[i] = e;
             i++;
-
         }
 
         modCount++;
@@ -153,17 +153,15 @@ public class ArrayList<E> implements List<E> {
 
     @Override
     public boolean removeAll(Collection<?> collection) {
-        if (collection.size() == 0) {
+        if (collection.isEmpty()) {
             return false;
         }
 
         final int initialSize = size;
 
-        for (int i = 0; i < size; i++) {
+        for (int i = size - 1; i >= 0; i--) {
             if (collection.contains(items[i])) {
                 remove(i);
-
-                i--;
             }
         }
 
@@ -174,10 +172,9 @@ public class ArrayList<E> implements List<E> {
     public boolean retainAll(Collection<?> collection) {
         final int initialSize = size;
 
-        for (int i = 0; i < size; i++) {
+        for (int i = size - 1; i >= 0; i--) {
             if (!collection.contains(items[i])) {
                 remove(i);
-                i--;
             }
         }
 
@@ -204,19 +201,21 @@ public class ArrayList<E> implements List<E> {
     public E set(int index, E item) {
         checkIndex(index);
 
-        return items[index] = item;
+        E oldElement = items[index];
+        items[index] = item;
+
+        return oldElement;
     }
 
     @Override
     public void add(int index, E item) {
-        if (index != size) {
-            checkIndex(index);
-        }
-        if (size == 0) {
-            ensureCapacity(DEFAULT_CAPACITY);
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Переданный индекс " + index + " вне допустимого диапазона от 0 до" + size);
         }
 
-        if (items.length <= size) {
+        if (size == 0) {
+            ensureCapacity(DEFAULT_CAPACITY);
+        } else if (items.length <= size) {
             ensureCapacity(items.length * 2);
         }
 
@@ -231,7 +230,7 @@ public class ArrayList<E> implements List<E> {
     public E remove(int index) {
         checkIndex(index);
 
-        E deletedElement = items[index];
+        E removedItem = items[index];
 
         System.arraycopy(items, index + 1, items, index, size - 1 - index);
         items[size - 1] = null;
@@ -239,7 +238,7 @@ public class ArrayList<E> implements List<E> {
         size--;
         modCount++;
 
-        return deletedElement;
+        return removedItem;
     }
 
     @Override
@@ -301,7 +300,7 @@ public class ArrayList<E> implements List<E> {
         return result.toString();
     }
 
-    // ниже этого коментария методы не нужно делать
+    // ниже этого комментария методы не нужно делать
     @Override
     public java.util.ListIterator<E> listIterator() {
         return null;
