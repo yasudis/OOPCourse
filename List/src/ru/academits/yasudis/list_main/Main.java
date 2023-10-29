@@ -18,7 +18,7 @@ public class Main {
         System.out.println("getCount() = " + list.getCount());
 
         SinglyLinkedList<Integer> listCopy = list.getCopy();
-        System.out.println("копированный список равен: " + listCopy);
+        System.out.println("Копированный список равен: " + listCopy);
 
         list.reverse();
         System.out.println("reverse() = " + list);
