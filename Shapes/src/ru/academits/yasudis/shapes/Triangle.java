@@ -21,17 +21,17 @@ public class Triangle implements Shape {
         this.x3 = x3;
         this.y3 = y3;
 
-        height = calculateHeight();
-        width = calculateWidth();
+        height = calculateWidth();
+        width = calculateHeight();
         area = calculateArea();
         perimeter = calculatePerimeter();
     }
 
-    private double calculateHeight() {
+    private double calculateWidth() {
         return Math.max(Math.max(x1, x2), x3) - Math.min(Math.min(x1, x2), x3);
     }
 
-    private double calculateWidth() {
+    private double calculateHeight() {
         return Math.max(Math.max(y1, y2), y3) - Math.min(Math.min(y1, y2), y3);
     }
 
@@ -96,7 +96,7 @@ public class Triangle implements Shape {
         if (object == this) {
             return true;
         }
-        
+
         if (object == null || object.getClass() != getClass()) {
             return false;
         }

@@ -18,7 +18,7 @@ public class Rectangle implements Shape {
     }
 
     private double calculatePerimeter() {
-        return height + width;
+        return 2 * height + 2 * width;
     }
 
     @Override
@@ -43,7 +43,7 @@ public class Rectangle implements Shape {
 
     @Override
     public String toString() {
-        return "Прямоугольник со сторонами: " + height + " и " + width;
+        return "Прямоугольник с шириной " + width + " и высотой " + height;
     }
 
     @Override

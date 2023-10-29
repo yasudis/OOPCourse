@@ -41,7 +41,7 @@ public class Square implements Shape {
 
     @Override
     public String toString() {
-        return "Квадрат с шириной " + sideLength + " и высотой " + sideLength;
+        return "Квадрат со стороной " + sideLength;
     }
 
     @Override
